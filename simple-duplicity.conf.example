@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# How often to create a full backup
+FULL_INTERVAL="1M"
+
+# Maximum number of full backups to keep
+MAX_FULL_BACKUPS="3"
+
+# Arguments to pass to msmtp. At a minimum, the destination e-mail address
+# needs to be provided. See `man msmtp`
+MSMTP_ARGS="you@yourdomain.com"
+
+# Send HTML formatted e-mails (true or false)
+HTML_EMAIL=true
+
+# E-mail subject when a backup is successful. Set to an empty string to disable
+# sending e-mails on successful backups
+SUCCESS_SUBJECT="[backup] Backup of $(hostname -f) on $(date) successful"
+
+# E-mail subject when a backup fails. Set to an empty string to disable sending
+# e-mails on failure
+FAILURE_SUBJECT="[backup] FAILURE: Backup of $(hostname -f) on $(date) failed"
+
+# Backup source (the directory to be backed up)
+BACKUP_SOURCE="$HOME"
+
+# Backup destination (the place were backups will be placed)
+BACKUP_TARGET="b2://[ACCOUNT ID]:[APPLICATION KEY]@[BUCKET]"
+
+# Arguments to be passed to all duplicity invocations
+DUPLICITY_ARGS="--encrypt-key=YOUR_ENC_KEY --sign-key=YOUR_SIGN_KEY"
+
+# Arguments only passed to duplicity when creating a backup
+DUPLICITY_BACKUP_ARGS=" \
+    --exclude-other-filesystems \
+    --exclude $HOME/.steam \
+    --exclude $HOME/.cache \
+    --exclude $HOME/.ccache \
+    --exclude $HOME/Downloads \
+    --exclude $HOME/.local/share/Trash \
+    --exclude $HOME/.local/share/Steam \
+    --exclude $HOME/.Trash \
+    --exclude $HOME/.dbus \
+    --exclude $HOME/.cddb \
+    --exclude $HOME/.adobe \
+    --exclude $HOME/.config/google-chrome \
+    --exclude $HOME/.mozilla/extensions \
+    --exclude $HOME/.mozilla/firefox \
+    --exclude $HOME/.thuderbird \
+    --exclude $HOME/.local/share/meld \
+    --exclude $HOME/.macromedia \
+    "
+
+# Arguments passed to duplicity to remove old backups. Leave empty to keep all
+# backups
+DUPLICITY_REMOVE_OLD_ARGS="remove-all-but-n-full 3"
+
+# Passphrase for your GPG encryption key (if required)
+PASSPHRASE=""
+
+# Passphrase for yout GPG signing key (if required)
+SIGN_PASSPHRASE=""
