@@ -15,7 +15,7 @@ HTML_EMAIL=true
 
 # E-mail subject when a backup is successful. Set to an empty string to disable
 # sending e-mails on successful backups
-SUCCESS_SUBJECT="[backup] Backup of $(hostname -f) on $(date) successful"
+SUCCESS_SUBJECT="[backup] Successful backup of $(hostname -f) on $(date)"
 
 # E-mail subject when a backup fails. Set to an empty string to disable sending
 # e-mails on failure
